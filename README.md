@@ -1,0 +1,2 @@
+# thriftServer
+将发送邮件等基础服务重构为thrift服务的方式
