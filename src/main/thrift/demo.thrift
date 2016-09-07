@@ -1,4 +1,4 @@
-namespace java com.sdww.server
-service demo {
-	void echo(1:string str)
+namespace java com.sdww8591.service
+service Demo {
+	string echo(1:string str)
 }
