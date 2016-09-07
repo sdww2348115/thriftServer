@@ -15,6 +15,7 @@ public class DemoServiceImp implements Demo.Iface{
     @Override
     public String echo(String str) throws TException {
         logger.info("process request:" + str);
+        System.out.println("process request:" + str);
         return str;
     }
 }
