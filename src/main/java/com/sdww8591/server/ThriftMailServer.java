@@ -6,11 +6,15 @@ import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by sdww on 16-9-8.
  */
 public class ThriftMailServer {
+
+    private static final Logger logger = LoggerFactory.getLogger(ThriftMailServer.class);
 
     public void start() {
         final MailService.Processor processor = new MailService.Processor(new MailServiceImp());

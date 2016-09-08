@@ -5,8 +5,11 @@ import com.sdww8591.service.mail.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Properties;
@@ -56,25 +59,12 @@ public class MailServiceImp implements MailService.Iface{
         //new MailServiceImp().sendTextEmail("test");
     }
 
-    class MyAuthenticator extends Authenticator {
-        private String username;
-        private String passwd;
-        public MyAuthenticator(String username, String passwd) {
-            this.username = username;
-            this.passwd = passwd;
-        }
-        @Override
-        protected PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(username, passwd);
-        }
-    }
-
     /**
      * 发送简单的文本邮件
      */
     public void sendTextEmail(Mail mail) throws Exception {
         // 创建Session实例对象
-        Session session = Session.getDefaultInstance(props, new MyAuthenticator("sdww8591@163.com", "wangxuan22"));
+        Session session = Session.getDefaultInstance(props);
 
         // 创建MimeMessage实例对象
         MimeMessage message = new MimeMessage(session);
@@ -94,11 +84,36 @@ public class MailServiceImp implements MailService.Iface{
         // 获得Transport实例对象
         Transport transport = session.getTransport();
         // 打开连接
-        transport.connect("sdww8591@163.com", "wangxuan22");
+        transport.connect("sdww8591@163.com", "sdww2348115");
         // 将message对象传递给transport对象，将邮件发送出去
         transport.sendMessage(message, message.getAllRecipients());
         // 关闭连接
         transport.close();
+    }
+
+    public MimeMessage getMimeMessage(Mail mail, Session session) throws Exception{
+
+        // 创建MimeMessage实例对象
+        MimeMessage mimeMessage = new MimeMessage(session);
+
+        // 设置发件人
+        mimeMessage.setFrom(new InternetAddress(from));
+
+        // 设置邮件主题
+        mimeMessage.setSubject(mail.getTitle());
+
+        // 设置收件人
+        mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(mail.getRecipient()));
+
+        // 设置发送时间
+        mimeMessage.setSentDate(new Date());
+
+        MimeBodyPart mimeBodyPart = new MimeBodyPart();
+        mimeBodyPart.setText(mail.getText());
+
+        MimeBodyPart attach = new MimeBodyPart();
+        DataHandler dh = new DataHandler(new FileDataSource("/home/sdww/"))
+
     }
 
     @Override

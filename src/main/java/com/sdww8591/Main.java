@@ -1,6 +1,7 @@
 package com.sdww8591;
 
 import com.sdww8591.server.ThriftDemoServer;
+import com.sdww8591.server.ThriftMailServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,6 @@ public class Main {
 
     public static void main( String[] args ) {
         logger.info("start....");
-        new ThriftDemoServer().start();
+        new ThriftMailServer().start();
     }
 }

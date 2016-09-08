@@ -16,7 +16,7 @@ public class SimpleClient {
   public void connect(String str) {
     try {
       // 设置调用的服务地址为本地，端口为 7911
-      TTransport transport = new TSocket("sdww8591.oicp.net", 9002);
+      TTransport transport = new TSocket("sdww8591.oicp.net", 9001);
       transport.open();
       // 设置传输协议为 TBinaryProtocol
       TProtocol protocol = new TBinaryProtocol(transport);

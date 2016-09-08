@@ -6,11 +6,15 @@ import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by sdww on 16-9-7.
  */
 public class ThriftDemoServer {
+
+    private static final Logger logger = LoggerFactory.getLogger(ThriftDemoServer.class);
 
     public void start() {
         final Demo.Processor processor = new Demo.Processor(new DemoServiceImp());
@@ -33,7 +37,7 @@ public class ThriftDemoServer {
         try {
             TServerTransport serverTransport = new TServerSocket(9001);
             TServer server = new TSimpleServer(new TServer.Args(serverTransport).processor(processor));
-            System.out.println("Starting the simple server...");
+            logger.info("Starting the simple server...");
             server.serve();
         } catch (Exception e) {
             e.printStackTrace();
