@@ -11,6 +11,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.util.Date;
 import java.util.Properties;
 
@@ -57,6 +58,11 @@ public class MailServiceImp implements MailService.Iface{
     public static void main(String[] args) throws Exception {
         // 发送文本邮件
         //new MailServiceImp().sendTextEmail("test");
+        Mail mail = new Mail();
+        mail.setTitle("附件测试");
+        mail.setText("hello world");
+        mail.setRecipient("wx2348115@sina.com");
+        new MailServiceImp().sendEmail(mail);
     }
 
     /**
@@ -91,6 +97,15 @@ public class MailServiceImp implements MailService.Iface{
         transport.close();
     }
 
+    public void sendEmail(Mail mail) throws Exception {
+        Session session = Session.getDefaultInstance(props);
+        MimeMessage message = getMimeMessage(mail, session);
+        Transport transport = session.getTransport();
+        transport.connect("sdww8591@163.com", "sdww2348115");
+        transport.sendMessage(message, message.getAllRecipients());
+        transport.close();
+    }
+
     public MimeMessage getMimeMessage(Mail mail, Session session) throws Exception{
 
         // 创建MimeMessage实例对象
@@ -112,8 +127,18 @@ public class MailServiceImp implements MailService.Iface{
         mimeBodyPart.setText(mail.getText());
 
         MimeBodyPart attach = new MimeBodyPart();
-        DataHandler dh = new DataHandler(new FileDataSource("/home/sdww/"))
+        DataHandler dh = new DataHandler(new FileDataSource("/home/sdww/SwitchyOmega.crx"));
+        attach.setDataHandler(dh);
+        attach.setFileName(dh.getName());
 
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(mimeBodyPart);
+        multipart.addBodyPart(attach);
+
+        mimeMessage.setContent(multipart);
+        mimeMessage.saveChanges();
+
+        return mimeMessage;
     }
 
     @Override
